@@ -22,11 +22,21 @@ var cargaHoraria = () => {
     console.log(`\nHoras: ${Math.trunc(totalMinutos / 60 + totalHoras)}\nMinutos: ${total.substr(-2) * 60 / 100}\nCarga horária total: ${total}\n`)
     return element(total)
 }
-// window.addEventListener('load', () => {windowLoad = true
-//     cargaHoraria()
-// })
 
-const button = document.querySelector('.button')
-window.addEventListener('load', () => {
-    button.addEventListener('click', cargaHoraria)
+var url = '/dashboard/course/'
+
+window.addEventListener("load", () => {
+    if (window.location.pathname.indexOf(url) != -1) {
+        verify()
+    } else {
+        console.log('Site diferente')
+    }
 })
+
+function verify() {
+    if(document.querySelector("#root > div > main > div.MuiBox-root.jss65 > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-8.MuiGrid-grid-lg-6 > div > span.MuiSkeleton-root.MuiSkeleton-rect.MuiSkeleton-wave") == null) {
+        cargaHoraria()
+    } else {
+        setTimeout(verify, 500)
+    }
+}
