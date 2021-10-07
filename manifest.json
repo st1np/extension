@@ -5,9 +5,14 @@
     "description": "Extensão feito para aprendizado para suprir a falta de informação de carga horária totais de cursos na plataforma Kultivi",
     "author": "st1np",
     "browser_action": {
-   	 "default_title": "KULTIVI CARGA HORÁRIA",
-   	 "default_popup": "index.html",
-   	 "default_icon": "icon.png"
+        "default_title": "KULTIVI CARGA HORÁRIA",
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "images/icon16.png",
+            "24": "images/icon24.png",
+            "32": "images/icon32.png",
+            "48": "images/icon48.png"
+        }
     },
     "permissions": [
         "activeTab"

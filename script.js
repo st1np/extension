@@ -1,3 +1,5 @@
+/////////////
+// Cria e seta um elemento com mensagem personalizada na página, seguindo o padrão de design do site.
 function setElement(title = 'Insira um título', text = 'Insira um texto') {
     let elementTitle = title
     let elementText = text
@@ -6,6 +8,8 @@ function setElement(title = 'Insira um título', text = 'Insira um texto') {
     document.querySelectorAll('ul.MuiList-root')[1].innerHTML += element
 }
 
+/////////////
+// Pega as horas e minutos dentro da página e faz as contas, retornando setElement com o total de horas e a mensagem personalizado, para criação do elemento na página.
 var totalWorkload = () => {
     let horas = 0,
     minutos = 0,
@@ -22,35 +26,35 @@ var totalWorkload = () => {
     }
     totalMinutos = minutos + horas * 60
     const total = `${Math.trunc(totalMinutos / 60)}:${totalMinutos % 60}`
-    console.log(`${total}`)
-    setElement(undefined, total)
+
+    setElement(`${total} horas`, `De aulas prontas para serem assistidas.`)
 }
 
-function loadVerify() {
-    window.addEventListener("load", () => {
-    if (window.location.pathname.indexOf(urlKultivi) != -1) {
-        verify()
-    } else {
-        console.log('Site diferente')
-    }
-})
-}
-
+/////////////
+// Verifica algumas coisas para executar o script
 function verify() {
-    if(document.querySelector("#root > div > main > div.MuiBox-root.jss65 > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-8.MuiGrid-grid-lg-6 > div > span.MuiSkeleton-root.MuiSkeleton-rect.MuiSkeleton-wave") == null) {
-        totalWorkload()
-    } else {
-        setTimeout(verify, 500)
+    /////////////
+    // Executa quando a página carregar.
+    if (window.location.hostname == 'app.kultivi.com' && window.location.pathname.indexOf('/dashboard/course/') != -1) {
+        if(document.querySelector("#root div main div div div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-8.MuiGrid-grid-lg-6 div span.MuiSkeleton-root.MuiSkeleton-rect.MuiSkeleton-wave") == null && document.querySelector("#root div main div div div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-3 div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-4 div ul li:nth-child(1)") != null) {
+            totalWorkload()
+        /////////////
+        // Loop verificando se a página carregou.
+        } else {
+            setTimeout(verify, 500)
+        }
     }
 }
 
+window.onload = verify  // Verifica quando a página carrega pela primeira vez
+
+/////////////
+// Observa se há navegação dentro do mesmo domínio e chama o verify || TRECHO DE CÓDIGO COPIADO, EU NÃO ESTAVA ACHANDO UMA SOLUÇÃO
 let lastUrl = location.href; 
 new MutationObserver(() => {
   const url = location.href;
   if (url !== lastUrl) {
     lastUrl = url;
-    if (window.location.hostname == 'app.kultivi.com' && window.location.pathname.indexOf('/dashboard/course/') != -1) {
-        window.onload = setTimeout(verify, 500)
-    }
+    verify()
   }
 }).observe(document, {subtree: true, childList: true});
