@@ -6,29 +6,25 @@ function setElement(title = 'Insira um título', text = 'Insira um texto') {
     document.querySelectorAll('ul.MuiList-root')[1].innerHTML += element
 }
 
-var cargaHoraria = () => {
-    let horas
-    let minutos
-    let totalHoras = 0
-    let totalMinutos = 0 
-    let i = 0
+var totalWorkload = () => {
+    let horas = 0,
+    minutos = 0,
+    i = 0,
+    totalMinutos = 0
     let tempos = document.querySelectorAll('.MuiChip-label')
     for(tempo of tempos) {
         if(i == 0) {
         } else {
-            horas = parseFloat(tempo.textContent.substr(0,2))
-            totalHoras += horas
-            minutos = parseFloat(tempo.textContent.substr(3,5))
-            totalMinutos += minutos
+            horas += parseInt(tempo.textContent.substr(0,2))
+            minutos += parseInt(tempo.textContent.substr(3,5))
         }
         i++
     }
-    const total = (totalMinutos / 60 + totalHoras).toFixed(2)
-    console.log(`\nHoras: ${Math.trunc(totalMinutos / 60 + totalHoras)}\nMinutos: ${total.substr(-2) * 60 / 100}\nCarga horária total: ${total}\n`)
-    setElement()
+    totalMinutos = minutos + horas * 60
+    const total = `${Math.trunc(totalMinutos / 60)}:${totalMinutos % 60}`
+    console.log(`${total}`)
+    setElement(undefined, total)
 }
-
-var urlKultivi = '/dashboard/course/'
 
 function loadVerify() {
     window.addEventListener("load", () => {
@@ -40,11 +36,9 @@ function loadVerify() {
 })
 }
 
-loadVerify()
-
 function verify() {
     if(document.querySelector("#root > div > main > div.MuiBox-root.jss65 > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-8.MuiGrid-grid-lg-6 > div > span.MuiSkeleton-root.MuiSkeleton-rect.MuiSkeleton-wave") == null) {
-        cargaHoraria()
+        totalWorkload()
     } else {
         setTimeout(verify, 500)
     }
@@ -55,8 +49,7 @@ new MutationObserver(() => {
   const url = location.href;
   if (url !== lastUrl) {
     lastUrl = url;
-    console.log('teste')
-    if (window.location.pathname.indexOf(urlKultivi) != -1) {
+    if (window.location.hostname == 'app.kultivi.com' && window.location.pathname.indexOf('/dashboard/course/') != -1) {
         window.onload = setTimeout(verify, 500)
     }
   }
